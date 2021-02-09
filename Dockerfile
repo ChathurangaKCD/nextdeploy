@@ -1,21 +1,22 @@
-FROM node:12
+FROM node:14.15.4-alpine3.12
 
 ENV PORT 3000
 
 # Create app directory
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir -p /app
+WORKDIR /app
 
 # Installing dependencies
-COPY package*.json /usr/src/app/
-RUN npm install
+COPY package.json /app/
+COPY yarn.lock /app/
+RUN yarn
 
 # Copying source files
-COPY . /usr/src/app
+COPY . /app
 
 # Building app
-RUN npm run build
+RUN yarn build
 EXPOSE 3000
 
 # Running the app
-CMD ["npm" ,"run" ,"start"]
+CMD ["yarn" ,"start",  "-H", "0.0.0.0"]
